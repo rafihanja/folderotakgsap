@@ -1,0 +1,55 @@
+# ==============================================================================
+# 🐳 Dockerfile Elite Standard (Node.js)
+# Aturan: Multi-stage build, Layer Caching, Non-Root User.
+# ==============================================================================
+
+# -------------------------
+# STAGE 1: Dependencies (Deps)
+# -------------------------
+FROM node:20-alpine AS deps
+WORKDIR /app
+
+# (Aturan Elite: Layer Caching) Salin hanya file dependency dulu
+COPY package.json package-lock.json ./
+# Hapus cache lokal NPM setelah instalasi untuk menekan ukuran image
+RUN npm ci && npm cache clean --force
+
+# -------------------------
+# STAGE 2: Builder
+# -------------------------
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Salin module dari stage deps
+COPY --from=deps /app/node_modules ./node_modules
+# Salin source code
+COPY . .
+
+# Kompilasi aplikasi (TypeScript -> JavaScript)
+RUN npm run build
+
+# -------------------------
+# STAGE 3: Runner (Production Image Final)
+# -------------------------
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Set environment ke produksi
+ENV NODE_ENV production
+
+# (Aturan Elite: Keamanan Non-Root) 
+# Image alpine-node sudah memiliki user bawaan bernama 'node'
+# Kita pindahkan kepemilikan folder ke user 'node'
+RUN chown -R node:node /app
+
+# Salin hanya hasil build dan module produksi dari stage builder
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/package.json ./package.json
+
+# Turunkan kasta hak akses dari Root menjadi user 'node' biasa
+USER node
+
+# Eksekusi aplikasi
+EXPOSE 3000
+CMD ["node", "dist/index.js"]

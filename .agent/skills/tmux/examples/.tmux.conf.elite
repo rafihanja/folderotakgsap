@@ -1,0 +1,33 @@
+# ==============================================================================
+# 🟩 Elite .tmux.conf
+# Ubah terminal Anda menjadi senjata pamungkas
+# ==============================================================================
+
+# 1. Ganti tombol utama dari Ctrl+B ke Ctrl+A (Lebih mudah dijangkau jari)
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# 2. Split layar menjadi dua (Bawah dan Kanan) menggunakan tombol logis (- dan |)
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+
+# 3. Reload konfigurasi dengan cepat menggunakan tombol r
+bind r source-file ~/.tmux.conf \; display "Konfigurasi Diperbarui!"
+
+# 4. Navigasi antar-layar menggunakan Alt + Tanda Panah (Tanpa perlu tekan prefix)
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# 5. Aktifkan dukungan Mouse (Untuk pemula yang belum terbiasa tanpa mouse)
+set -g mouse on
+
+# 6. Tema Tampilan (Status Bar Keren)
+set -g status-bg black
+set -g status-fg white
+set -g status-left '#[fg=green](#S) '
+set -g window-status-current-format '#[fg=black,bg=green] #I:#W #[default]'

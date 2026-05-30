@@ -1,0 +1,505 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none; /* Prevent scroll on mobile */
+  background-color: #8fd8f4; /* Sky blue fallback */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+canvas {
+  display: block;
+  outline: none;
+}
+
+#ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through to canvas by default */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.top-hud {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5;
+}
+.crosshair::before, .crosshair::after {
+  content: "";
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+.crosshair::before {
+  top: 9px;
+  left: 0;
+  width: 20px;
+  height: 2px;
+}
+.crosshair::after {
+  top: 0;
+  left: 9px;
+  width: 2px;
+  height: 20px;
+}
+
+.mining-progress-container {
+  position: absolute;
+  top: calc(50% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 6px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.mining-progress-container.hidden {
+  display: none;
+}
+
+.mining-progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #ddd;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.debug-panel {
+  background: rgba(20, 34, 44, 0.72);
+  color: #0f0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.left-hud {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.controls-hint {
+  font-size: 10px;
+  background: rgba(20, 34, 44, 0.5);
+  padding: 8px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+/* VIRTUAL JOYSTICK */
+.joystick-zone {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 120px;
+  height: 120px;
+  pointer-events: auto; /* Catch touches */
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-knob {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* HOTBAR & ACTIONS */
+.bottom-hud {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.hotbar {
+  display: flex;
+  gap: 8px;
+  background: rgba(20, 34, 44, 0.72);
+  padding: 8px;
+  border-radius: 12px;
+  pointer-events: auto;
+}
+
+.hotbar-slot {
+  width: 58px;
+  height: 58px;
+  background: rgba(15, 26, 36, 0.78);
+  border: 2px solid #555;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  position: relative;
+  cursor: pointer;
+}
+
+.hotbar-slot.selected {
+  border-color: #ffd84d;
+  background: rgba(255, 216, 77, 0.2);
+}
+
+.hotbar-qty {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+}
+
+/* NOTIFICATIONS */
+.notification-toast {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.notification-toast.hidden {
+  opacity: 0;
+}
+
+.notification-toast.visible {
+  opacity: 1;
+}
+
+/* CRAFTING UI */
+.action-cluster {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.action-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  background: rgba(20, 34, 44, 0.8);
+  color: white;
+  border: 2px solid #555;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  min-width: 80px;
+  text-align: center;
+}
+
+.action-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(0.95);
+}
+
+.craft-action-btn {
+  border-color: #c48a4a;
+}
+
+.crafting-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 400px;
+  max-height: 80%;
+  background: rgba(20, 20, 20, 0.95);
+  border: 3px solid #666;
+  border-radius: 12px;
+  color: white;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+
+.crafting-panel.hidden {
+  display: none;
+}
+
+.crafting-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 2px solid #444;
+}
+
+.crafting-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-btn {
+  background: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.crafting-recipe-list {
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.recipe-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recipe-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.recipe-icon {
+  font-size: 32px;
+  background: rgba(0,0,0,0.5);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.recipe-title strong {
+  font-size: 16px;
+  color: #f1c40f;
+}
+
+.recipe-title small {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.recipe-details {
+  font-size: 13px;
+  line-height: 1.4;
+  background: rgba(0,0,0,0.3);
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.recipe-output {
+  margin-top: 5px;
+  color: #2ecc71;
+}
+
+.craft-btn {
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.craft-btn:active {
+  transform: scale(0.98);
+}
+
+.craft-btn.disabled {
+  background: #7f8c8d;
+  color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* DIALOGUE & INTERACTION UI */
+.interaction-prompt {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(20, 34, 44, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: 1px solid rgba(255, 216, 77, 0.5);
+  pointer-events: none;
+  z-index: 15;
+}
+
+.interaction-prompt.hidden {
+  display: none;
+}
+
+.dialogue-panel {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  background: rgba(18, 30, 42, 0.82);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  pointer-events: auto;
+  z-index: 25;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.dialogue-panel.hidden {
+  display: none;
+}
+
+.dialogue-speaker {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd84d;
+  margin-bottom: 8px;
+}
+
+.dialogue-prompt {
+  font-size: 14px;
+  color: #777;
+  text-align: right;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#performance-ui {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #0f0;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.dialogue-text {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  min-height: 48px;
+}
+
+.dialogue-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: right;
+}
+
+.bimo-bubble {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  max-width: 250px;
+  background: rgba(20, 60, 80, 0.85);
+  border: 1px solid #4a90e2;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+  padding: 12px;
+  color: white;
+  pointer-events: none;
+  z-index: 12;
+  transition: opacity 0.3s;
+}
+
+.bimo-bubble.hidden {
+  opacity: 0;
+}
+
+.bimo-speaker {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4a90e2;
+  margin-bottom: 4px;
+}
+
+.bimo-text {
+  font-size: 14px;
+  line-height: 1.4;
+}

@@ -1,0 +1,221 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Outfit', sans-serif;
+  background: #0e0a1a;
+  cursor: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Ensure SVG is responsive and keeps aspect ratio centered */
+svg {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+}
+
+.scrollElement {
+  position: absolute;
+  height: 6000px;
+  width: 10px;
+  top: 0;
+  z-index: 0;
+}
+
+/* Cinematic Overlay to add visual depth */
+.cinematic-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 30%, rgba(14, 10, 26, 0.6) 100%);
+  z-index: 5;
+}
+
+/* UI Container */
+.ui-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Hero Title Overlay */
+.hero-title {
+  margin-top: 12vh;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.hero-title h1 {
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.hero-title p {
+  font-weight: 300;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-top: 10px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+/* Modern Glassmorphism Button */
+.glass-btn {
+  pointer-events: auto;
+  align-self: flex-end;
+  margin: 0 5% 5% 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  padding: 0.8rem 1.8rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.glass-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-aspect-ratio: 1/1) {
+  svg {
+    height: auto;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  body {
+    background: #0e0a1a;
+  }
+}
+
+/* --- Atmospheric Elements --- */
+#weatherCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.fog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.1; /* Controlled via JS/GSAP later */
+  overflow: hidden;
+}
+
+.fog-container::before,
+.fog-container::after {
+  content: "";
+  position: absolute;
+  width: 200vw;
+  height: 100vh;
+  top: 10%;
+  left: -50vw;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+  filter: blur(50px);
+  animation: fogFloat 60s ease-in-out infinite alternate;
+}
+
+.fog-container::after {
+  background: radial-gradient(ellipse at center, rgba(200, 200, 255, 0.1) 0%, transparent 60%);
+  animation: fogFloat 80s ease-in-out infinite alternate-reverse;
+  top: 30%;
+  left: -20vw;
+}
+
+@keyframes fogFloat {
+  0% { transform: translateX(-10%) scale(1); }
+  100% { transform: translateX(10%) scale(1.2); }
+}
+
+.lightning-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at top center, rgba(255, 255, 255, 1) 0%, rgba(200, 220, 255, 0.6) 40%, rgba(100, 150, 255, 0.1) 80%, transparent 100%);
+  mix-blend-mode: color-dodge; /* Makes the flash burn bright against the background */
+  pointer-events: none;
+  z-index: 5; /* moved up slightly to flash over fog */
+  opacity: 0;
+}
+
+/* Custom Cursor */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background-color 0.3s;
+}
+
+.cursor.hover-effect {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 1);
+  mix-blend-mode: difference;
+}
+
+/* Ensure buttons and links still show hover state logic but no default cursor */
+a, button, .glass-btn {
+  cursor: none !important;
+}
+

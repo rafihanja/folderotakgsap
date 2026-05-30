@@ -1,0 +1,52 @@
+# ==============================================================================
+# ☸️ Elite Deployment K8s (Node.js App)
+# Aturan: Resource Limits, Probes, Immutable Image Tags.
+# ==============================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elite-backend-deployment
+  labels:
+    app: elite-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elite-backend
+  template:
+    metadata:
+      labels:
+        app: elite-backend
+    spec:
+      containers:
+      - name: elite-backend
+        # (Aturan Elite: Larangan keras tag :latest)
+        image: my-registry.com/elite-backend:v1.4.2
+        ports:
+        - containerPort: 3000
+        
+        # (Aturan Elite: Pembatasan Sumber Daya CPU/Memori)
+        # Mencegah pod merampok seluruh RAM node
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+        # (Aturan Elite: Liveness & Readiness Probes)
+        # Memastikan aplikasi bisa melayani permintaan.
+        livenessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /api/v1/health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
