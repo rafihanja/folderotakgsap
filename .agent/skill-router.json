@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-01",
+  "sourcePriority": [
+    "local-file-evidence",
+    "command-output",
+    "official-docs-or-primary-sources",
+    "local-skill-docs",
+    "model-reasoning-labelled-as-assumption"
+  ],
+  "antigravity": {
+    "workspaceRulesPath": ".agents/rules",
+    "workspaceSkillsPathPreferredByDocs": ".agents/skills",
+    "workspaceSkillsPathUsedByThisRepo": ".agent/skills",
+    "compatibilityNote": "Antigravity docs state .agents/skills is the default and .agent/skills remains supported for backward compatibility."
+  },
+  "requiredValidation": {
+    "agentConfigChanged": [
+      "node .agent/scripts/validate-agent-skills.mjs",
+      "node .agent/scripts/agent-doctor.mjs"
+    ],
+    "stackUnknown": [
+      "node .agent/scripts/detect-project.mjs"
+    ]
+  },
+  "routes": [
+    {
+      "when": ["dependency:gsap", "file:gsap", "request:animation"],
+      "skills": ["gsap-core", "gsap-timeline", "gsap-performance"],
+      "validation": ["project-build-if-available", "browser-or-visual-check-if-ui"]
+    },
+    {
+      "when": ["dependency:@gsap/react", "dependency:react", "framework:nextjs"],
+      "skills": ["gsap-react", "elite-gsap-react-architecture", "react-best-practices", "nextjs-best-practices"],
+      "validation": ["npm-run-build-if-present", "npm-run-lint-if-present"]
+    },
+    {
+      "when": ["request:scroll-animation", "file:ScrollTrigger", "dependency:gsap"],
+      "skills": ["gsap-scrolltrigger", "gsap-performance", "gsap-plugins"],
+      "validation": ["reduced-motion-check", "refresh-cleanup-check", "browser-or-visual-check-if-ui"]
+    },
+    {
+      "when": ["framework:static-web", "file:index.html"],
+      "skills": ["frontend-design", "gsap-core", "web-performance-optimization"],
+      "validation": ["html-css-js-syntax-check", "responsive-check-if-ui"]
+    },
+    {
+      "when": ["framework:nextjs"],
+      "skills": ["nextjs-app-router-patterns", "nextjs-best-practices", "react-best-practices"],
+      "validation": ["npm-run-build-if-present", "npm-run-lint-if-present"]
+    },
+    {
+      "when": ["framework:vite", "dependency:react"],
+      "skills": ["react-best-practices", "frontend-design", "react-component-performance"],
+      "validation": ["npm-run-build-if-present"]
+    },
+    {
+      "when": ["request:review", "request:pre-push", "request:quality"],
+      "skills": ["code-reviewer", "codebase-audit-pre-push", "verification-before-completion"],
+      "validation": ["git-diff-review", "available-tests"]
+    },
+    {
+      "when": ["request:security", "file:.env", "request:secret-scan"],
+      "skills": ["security-audit", "cc-skill-security-review", "secrets-management"],
+      "validation": ["secret-pattern-scan", "dependency-audit-if-present"]
+    },
+    {
+      "when": ["request:deploy", "platform:vercel"],
+      "skills": ["vercel-deployment", "deployment-validation-config-validate"],
+      "validation": ["build-before-deploy", "env-var-check"]
+    },
+    {
+      "when": ["request:apps-script", "file:Code.gs", "file:appsscript.json"],
+      "skills": ["google-sheets-automation", "googlesheets-automation", "frontend-design"],
+      "validation": ["frontend-backend-contract-check"]
+    }
+  ],
+  "nonGenericResponseRules": [
+    "Name exact files inspected.",
+    "Name exact skills selected and why.",
+    "Name exact validation command or explain why no validation exists.",
+    "Do not provide broad advice unless it maps to this repository."
+  ]
+}

@@ -22,17 +22,32 @@ Gunakan instruksi ini untuk semua pekerjaan di repository ini, terutama saat bek
 ## `.agent` Workflow
 
 - `.agent/skills` adalah knowledge base skill yang sengaja disimpan di Git.
+- `.agents/rules` adalah aturan workspace Antigravity-native yang memuat guardrail utama.
 - Jangan hapus, untrack, atau memindahkan `.agent` tanpa perintah eksplisit user.
 - Setelah mengubah `.agent`, jalankan:
 
 ```bash
 node .agent/scripts/validate-agent-skills.mjs
+node .agent/scripts/agent-doctor.mjs
 ```
 
 - Untuk pekerjaan yang menyangkut `.agent`, commit dan push perubahan ke GitHub jika user sudah meminta sinkronisasi GitHub.
+- Saat stack project belum jelas, jalankan:
+
+```bash
+node .agent/scripts/detect-project.mjs
+```
+
+## Hybrid Mode
+
+- Gunakan bukti lokal dulu: file, manifest, package config, dan output command.
+- Gunakan `.agent/skill-router.json` untuk memilih skill, bukan menebak dari ingatan.
+- Gunakan dokumentasi resmi saat perilaku tools bisa berubah, terutama Antigravity, framework, deploy, package manager, dan security.
+- Jangan memberi jawaban generik: sebutkan file yang dicek, skill yang relevan, command validasi, dan risiko yang tersisa.
 
 ## Safety Boundaries
 
 - Jangan menjalankan script dari `.agent/skills` secara otomatis. Baca `SKILL.md` dan script terkait dulu.
 - Jangan commit credential, `.env` asli, token, private key, atau output build/cache yang tidak perlu.
 - Jangan menyentuh folder untracked atau perubahan user yang tidak terkait dengan task.
+- Untuk Antigravity, gunakan mode/setting aman untuk project yang belum dipercaya: terminal command review, workspace isolation, dan Strict Mode jika tersedia.

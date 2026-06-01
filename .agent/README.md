@@ -15,7 +15,11 @@ Folder ini disimpan di Git supaya setup skill AI agent bisa dipulihkan saat pind
 Guardrail utama ada di:
 
 - `../AGENTS.md`: aturan kerja root untuk agent di repository ini.
+- `../.agents/rules/evidence-first.md`: rule native Antigravity untuk kerja berbasis bukti.
+- `../.agents/rules/hybrid-router.md`: rule native Antigravity untuk routing skill dan validasi.
 - `core/anti-hallucination.md`: aturan bukti, asumsi, validasi, dan red flags.
+- `core/hybrid-agent-policy.md`: policy hybrid lokal + riset resmi + skill routing.
+- `core/safe-commands.md`: registry command aman, butuh izin, dan berisiko tinggi.
 
 Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
 
@@ -53,9 +57,16 @@ Skill pendukung yang sering berguna:
 
 ```bash
 node .agent/scripts/validate-agent-skills.mjs
+node .agent/scripts/agent-doctor.mjs
 ```
 
 Jika validasi lolos, skill manifest sudah cocok dengan isi disk dan skill GSAP utama tersedia.
+
+Untuk mendeteksi stack project dan skill yang relevan:
+
+```bash
+node .agent/scripts/detect-project.mjs
+```
 
 ## Catatan Keamanan
 

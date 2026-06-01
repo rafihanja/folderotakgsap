@@ -1,0 +1,184 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const currentFile = fileURLToPath(import.meta.url);
+const repoRoot = path.resolve(path.dirname(currentFile), "..", "..");
+const agentRoot = path.join(repoRoot, ".agent");
+const agentsRoot = path.join(repoRoot, ".agents");
+const skillsRoot = path.join(agentRoot, "skills");
+const manifestPath = path.join(skillsRoot, ".antigravity-install-manifest.json");
+const routerPath = path.join(agentRoot, "skill-router.json");
+
+const requiredFiles = [
+  "AGENTS.md",
+  ".agents/rules/evidence-first.md",
+  ".agents/rules/hybrid-router.md",
+  ".agent/README.md",
+  ".agent/core/anti-hallucination.md",
+  ".agent/core/hybrid-agent-policy.md",
+  ".agent/core/safe-commands.md",
+  ".agent/skill-router.json",
+  ".agent/skills/llms.txt",
+  ".agent/scripts/validate-agent-skills.mjs",
+  ".agent/scripts/detect-project.mjs",
+  ".agent/scripts/agent-doctor.mjs",
+];
+
+const requiredSkills = [
+  "gsap-core",
+  "gsap-timeline",
+  "gsap-scrolltrigger",
+  "gsap-plugins",
+  "gsap-utils",
+  "gsap-react",
+  "gsap-frameworks",
+  "gsap-performance",
+  "elite-gsap-react-architecture",
+];
+
+const secretPatterns = [
+  ["AWS access key", /AKIA[0-9A-Z]{16}/],
+  ["GitHub token", /gh[pousr]_[A-Za-z0-9_]{36,}/],
+  ["OpenAI key", /sk-[A-Za-z0-9]{32,}/],
+  ["Anthropic key", /sk-ant-[A-Za-z0-9_-]{20,}/],
+  ["Hugging Face token", /hf_[A-Za-z0-9]{20,}/],
+  ["Google API key", /AIza[0-9A-Za-z_-]{35}/],
+  ["Private key marker", /-----BEGIN [A-Z ]*PRIVATE KEY-----/],
+];
+
+const failures = [];
+const warnings = [];
+
+function rel(file) {
+  return path.relative(repoRoot, file).replaceAll(path.sep, "/");
+}
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (error) {
+    failures.push(`${rel(file)} is not valid JSON: ${error.message}`);
+    return null;
+  }
+}
+
+function addFailure(message) {
+  failures.push(message);
+}
+
+function walk(directory, visitor) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const absolutePath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      walk(absolutePath, visitor);
+    } else {
+      visitor(absolutePath);
+    }
+  }
+}
+
+for (const file of requiredFiles) {
+  if (!fs.existsSync(path.join(repoRoot, file))) {
+    addFailure(`Missing required file: ${file}`);
+  }
+}
+
+const manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : null;
+const router = fs.existsSync(routerPath) ? readJson(routerPath) : null;
+
+const skillDirs = [];
+if (fs.existsSync(skillsRoot)) {
+  walk(skillsRoot, (file) => {
+    if (path.basename(file) === "SKILL.md") {
+      skillDirs.push(path.relative(skillsRoot, path.dirname(file)).replaceAll(path.sep, "/"));
+    }
+  });
+} else {
+  addFailure("Missing .agent/skills directory.");
+}
+
+const manifestEntries = new Set(Array.isArray(manifest?.entries) ? manifest.entries : []);
+for (const skill of skillDirs) {
+  if (!manifestEntries.has(skill)) addFailure(`Skill missing from manifest: ${skill}`);
+}
+
+for (const entry of manifestEntries) {
+  if (!fs.existsSync(path.join(skillsRoot, entry))) addFailure(`Manifest entry missing on disk: ${entry}`);
+}
+
+for (const skill of requiredSkills) {
+  if (!fs.existsSync(path.join(skillsRoot, skill, "SKILL.md"))) {
+    addFailure(`Required GSAP skill missing: ${skill}`);
+  }
+  if (!manifestEntries.has(skill)) {
+    addFailure(`Required GSAP skill missing from manifest: ${skill}`);
+  }
+}
+
+if (router) {
+  if (!Array.isArray(router.routes)) addFailure(".agent/skill-router.json must contain routes array.");
+  if (!Array.isArray(router.sourcePriority)) addFailure(".agent/skill-router.json must contain sourcePriority array.");
+
+  const routedSkills = new Set((router.routes || []).flatMap((route) => route.skills || []));
+  for (const skill of routedSkills) {
+    if (!fs.existsSync(path.join(skillsRoot, skill, "SKILL.md"))) {
+      addFailure(`Router references missing skill: ${skill}`);
+    }
+  }
+}
+
+const agentControlFiles = [
+  path.join(repoRoot, "AGENTS.md"),
+  path.join(agentRoot, "README.md"),
+  path.join(agentRoot, "skill-router.json"),
+];
+
+for (const directory of [
+  path.join(agentRoot, "core"),
+  path.join(agentRoot, "scripts"),
+  path.join(agentsRoot, "rules"),
+]) {
+  if (fs.existsSync(directory)) {
+    walk(directory, (file) => agentControlFiles.push(file));
+  }
+}
+
+for (const file of agentControlFiles) {
+  if (!fs.existsSync(file)) continue;
+  const content = fs.readFileSync(file, "utf8");
+  for (const [name, pattern] of secretPatterns) {
+    if (pattern.test(content)) {
+      addFailure(`Secret-like value found in ${rel(file)} (${name}).`);
+    }
+  }
+}
+
+const agentsRuleCount = fs.existsSync(path.join(agentsRoot, "rules"))
+  ? fs.readdirSync(path.join(agentsRoot, "rules")).filter((name) => name.endsWith(".md")).length
+  : 0;
+
+if (agentsRuleCount === 0) warnings.push("No .agents/rules/*.md files found.");
+if (!fs.existsSync(path.join(agentRoot, "skills"))) warnings.push("No .agent/skills directory found.");
+
+if (failures.length > 0) {
+  console.error("FAIL: agent doctor found problems.");
+  for (const failure of failures) console.error(`- ${failure}`);
+  if (warnings.length > 0) {
+    console.error("Warnings:");
+    for (const warning of warnings) console.error(`- ${warning}`);
+  }
+  process.exit(1);
+}
+
+console.log("OK: agent doctor passed.");
+console.log(`- Required files: ${requiredFiles.length}`);
+console.log(`- Antigravity rule files: ${agentsRuleCount}`);
+console.log(`- Skills with SKILL.md: ${skillDirs.length}`);
+console.log(`- Manifest entries: ${manifestEntries.size}`);
+console.log(`- Required GSAP skills: ${requiredSkills.length}`);
+console.log(`- Agent control files secret-scanned: ${agentControlFiles.length}`);
+if (warnings.length > 0) {
+  console.log("Warnings:");
+  for (const warning of warnings) console.log(`- ${warning}`);
+}
