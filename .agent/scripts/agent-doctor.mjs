@@ -10,12 +10,15 @@ const manifestPath = path.join(skillsRoot, ".antigravity-install-manifest.json")
 const routerPath = path.join(agentRoot, "skill-router.json");
 
 const requiredFiles = [
+  ".agent/START_HERE.md",
   ".agent/AGENTS.md",
+  ".agent/adapters/adapter-map.json",
   ".agent/rules/evidence-first.md",
   ".agent/rules/hybrid-router.md",
   ".agent/rules/professional-engineering.md",
   ".agent/README.md",
   ".agent/core/anti-hallucination.md",
+  ".agent/core/agent-adapter-strategy.md",
   ".agent/core/hybrid-agent-policy.md",
   ".agent/core/professional-engineering-standards.md",
   ".agent/core/safe-commands.md",
@@ -24,6 +27,7 @@ const requiredFiles = [
   ".agent/scripts/validate-agent-skills.mjs",
   ".agent/scripts/detect-project.mjs",
   ".agent/scripts/agent-doctor.mjs",
+  ".agent/scripts/export-agent-adapters.mjs",
 ];
 
 const requiredSkills = [
@@ -130,13 +134,16 @@ if (router) {
 }
 
 const agentControlFiles = [
+  path.join(agentRoot, "START_HERE.md"),
   path.join(agentRoot, "AGENTS.md"),
   path.join(agentRoot, "README.md"),
   path.join(agentRoot, "skill-router.json"),
+  path.join(agentRoot, "adapters", "adapter-map.json"),
 ];
 
 for (const directory of [
   path.join(agentRoot, "core"),
+  path.join(agentRoot, "adapters"),
   path.join(agentRoot, "rules"),
   path.join(agentRoot, "scripts"),
 ]) {

@@ -10,11 +10,14 @@ const manifestPath = path.join(skillsRoot, ".antigravity-install-manifest.json")
 
 const requiredSupportFiles = [
   path.join(agentRoot, "README.md"),
+  path.join(agentRoot, "START_HERE.md"),
   path.join(agentRoot, "AGENTS.md"),
+  path.join(agentRoot, "adapters", "adapter-map.json"),
   path.join(agentRoot, "rules", "evidence-first.md"),
   path.join(agentRoot, "rules", "hybrid-router.md"),
   path.join(agentRoot, "rules", "professional-engineering.md"),
   path.join(agentRoot, "core", "anti-hallucination.md"),
+  path.join(agentRoot, "core", "agent-adapter-strategy.md"),
   path.join(agentRoot, "core", "hybrid-agent-policy.md"),
   path.join(agentRoot, "core", "professional-engineering-standards.md"),
   path.join(agentRoot, "core", "safe-commands.md"),
@@ -22,6 +25,7 @@ const requiredSupportFiles = [
   path.join(skillsRoot, "llms.txt"),
   path.join(agentRoot, "scripts", "detect-project.mjs"),
   path.join(agentRoot, "scripts", "agent-doctor.mjs"),
+  path.join(agentRoot, "scripts", "export-agent-adapters.mjs"),
 ];
 
 const requiredSkills = [

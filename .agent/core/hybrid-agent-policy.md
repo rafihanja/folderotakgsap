@@ -68,7 +68,9 @@ An agent must not present a guess as fact. If a claim came from local files, cit
 
 Canonical paths:
 
+- `.agent/START_HERE.md`
 - `.agent/AGENTS.md`
+- `.agent/adapters/adapter-map.json`
 - `.agent/rules/*.md`
 - `.agent/core/*.md`
 - `.agent/skills/*/SKILL.md`
@@ -76,3 +78,9 @@ Canonical paths:
 - `.agent/scripts/*.mjs`
 
 Do not create or require root-level agent files unless the user asks for an export for a specific tool.
+
+Activation paths:
+
+- Manual: paste the prompt from `.agent/START_HERE.md`.
+- Adapter dry-run: `node .agent/scripts/export-agent-adapters.mjs --dry-run`.
+- Adapter export: `node .agent/scripts/export-agent-adapters.mjs --write --tool <tool>`.

@@ -2,6 +2,13 @@
 
 Folder ini disimpan di Git supaya setup skill AI agent bisa dipulihkan saat pindah device. Isi utamanya ada di `skills/`: kumpulan `SKILL.md`, referensi, script, template, dan aset pendukung.
 
+Mulai dari:
+
+- `START_HERE.md`: instruksi pertama untuk agent apa pun.
+- `AGENTS.md`: aturan utama portable untuk semua AI agent.
+- `adapters/adapter-map.json`: daftar adapter tool yang bisa diexport.
+- `scripts/export-agent-adapters.mjs`: exporter bridge file yang dry-run secara default.
+
 ## Tujuan
 
 - Menjaga skill yang sudah dikurasi tetap ikut repository.
@@ -9,6 +16,7 @@ Folder ini disimpan di Git supaya setup skill AI agent bisa dipulihkan saat pind
 - Menghindari pengulangan instalasi manual saat pindah device.
 - Memberi cara validasi cepat untuk memastikan manifest dan isi disk sinkron.
 - Mengurangi halusinasi agent dengan aturan evidence-first.
+- Menyediakan adapter opt-in untuk tool yang perlu file root seperti `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, atau `.agents/rules`.
 
 ## Anti-Hallucination
 
@@ -19,6 +27,7 @@ Guardrail utama ada di:
 - `rules/hybrid-router.md`: rule untuk routing skill dan validasi.
 - `rules/professional-engineering.md`: rule standar engineering profesional.
 - `core/anti-hallucination.md`: aturan bukti, asumsi, validasi, dan red flags.
+- `core/agent-adapter-strategy.md`: strategi agar `.agent` tetap canonical tapi bisa diexport ke tool tertentu.
 - `core/hybrid-agent-policy.md`: policy hybrid lokal + riset resmi + skill routing.
 - `core/safe-commands.md`: registry command aman, butuh izin, dan berisiko tinggi.
 - `core/professional-engineering-standards.md`: standar engineering profesional untuk security, accessibility, supply-chain, testing, dan delivery.
@@ -26,6 +35,22 @@ Guardrail utama ada di:
 Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
 
 Catatan: canonical agent kit sengaja berada di dalam `.agent`. Jika suatu AI tool membutuhkan file root seperti `AGENTS.md` atau folder khusus seperti `.agents/rules`, export/copy dari `.agent` hanya jika user meminta.
+
+## Adapter Export
+
+Untuk melihat adapter apa yang akan dibuat tanpa menulis file:
+
+```bash
+node .agent/scripts/export-agent-adapters.mjs --dry-run
+```
+
+Untuk membuat adapter tool tertentu, gunakan `--write` secara eksplisit:
+
+```bash
+node .agent/scripts/export-agent-adapters.mjs --write --tool claude
+```
+
+Adapter adalah bridge kecil. Canonical source tetap berada di `.agent`.
 
 ## Profil Skill Utama
 
@@ -62,6 +87,7 @@ Skill pendukung yang sering berguna:
 ```bash
 node .agent/scripts/validate-agent-skills.mjs
 node .agent/scripts/agent-doctor.mjs
+node .agent/scripts/export-agent-adapters.mjs --dry-run
 ```
 
 Jika validasi lolos, skill manifest sudah cocok dengan isi disk dan skill GSAP utama tersedia.
