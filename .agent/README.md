@@ -6,8 +6,11 @@ Mulai dari:
 
 - `START_HERE.md`: instruksi pertama untuk agent apa pun.
 - `AGENTS.md`: aturan utama portable untuk semua AI agent.
+- `active-skills.json`: skill prioritas agar agent tidak kebanjiran konteks.
 - `adapters/adapter-map.json`: daftar adapter tool yang bisa diexport.
+- `adapters/profiles/antigravity.json`: profil export Antigravity.
 - `scripts/export-agent-adapters.mjs`: exporter bridge file yang dry-run secara default.
+- `scripts/bootstrap-agent.mjs`: satu command untuk validasi, detect project, cache inventory, adapter dry-run, dan doctor.
 
 ## Tujuan
 
@@ -17,6 +20,8 @@ Mulai dari:
 - Memberi cara validasi cepat untuk memastikan manifest dan isi disk sinkron.
 - Mengurangi halusinasi agent dengan aturan evidence-first.
 - Menyediakan adapter opt-in untuk tool yang perlu file root seperti `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, atau `.agents/rules`.
+- Menyediakan cache inventory project lokal di `projects/index.json`.
+- Menyimpan decision log di `memory/decisions.md`.
 
 ## Anti-Hallucination
 
@@ -35,6 +40,16 @@ Guardrail utama ada di:
 Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
 
 Catatan: canonical agent kit sengaja berada di dalam `.agent`. Jika suatu AI tool membutuhkan file root seperti `AGENTS.md` atau folder khusus seperti `.agents/rules`, export/copy dari `.agent` hanya jika user meminta.
+
+## Bootstrap
+
+Untuk setup cepat setelah clone atau pindah device:
+
+```bash
+node .agent/scripts/bootstrap-agent.mjs
+```
+
+Bootstrap menjalankan validator, project detector, menulis `projects/index.json`, menjalankan adapter dry-run, lalu menjalankan doctor.
 
 ## Adapter Export
 
@@ -87,6 +102,7 @@ Skill pendukung yang sering berguna:
 ```bash
 node .agent/scripts/validate-agent-skills.mjs
 node .agent/scripts/agent-doctor.mjs
+node .agent/scripts/bootstrap-agent.mjs
 node .agent/scripts/export-agent-adapters.mjs --dry-run
 ```
 

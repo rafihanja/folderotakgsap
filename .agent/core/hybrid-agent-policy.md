@@ -71,8 +71,11 @@ Canonical paths:
 - `.agent/START_HERE.md`
 - `.agent/AGENTS.md`
 - `.agent/adapters/adapter-map.json`
+- `.agent/active-skills.json`
 - `.agent/rules/*.md`
 - `.agent/core/*.md`
+- `.agent/memory/decisions.md`
+- `.agent/projects/index.json`
 - `.agent/skills/*/SKILL.md`
 - `.agent/skill-router.json`
 - `.agent/scripts/*.mjs`
@@ -82,5 +85,6 @@ Do not create or require root-level agent files unless the user asks for an expo
 Activation paths:
 
 - Manual: paste the prompt from `.agent/START_HERE.md`.
+- Bootstrap: `node .agent/scripts/bootstrap-agent.mjs`.
 - Adapter dry-run: `node .agent/scripts/export-agent-adapters.mjs --dry-run`.
 - Adapter export: `node .agent/scripts/export-agent-adapters.mjs --write --tool <tool>`.

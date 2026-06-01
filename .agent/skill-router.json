@@ -17,6 +17,7 @@
   },
   "requiredValidation": {
     "agentConfigChanged": [
+      "node .agent/scripts/bootstrap-agent.mjs",
       "node .agent/scripts/validate-agent-skills.mjs",
       "node .agent/scripts/agent-doctor.mjs",
       "node .agent/scripts/export-agent-adapters.mjs --dry-run"
@@ -25,6 +26,8 @@
       "node .agent/scripts/detect-project.mjs"
     ]
   },
+  "activeSkillSet": ".agent/active-skills.json",
+  "projectInventory": ".agent/projects/index.json",
   "professionalStandards": {
     "security": "OWASP ASVS-style verification for web application security controls.",
     "accessibility": "WCAG 2.2 for user-facing web UI.",
@@ -86,6 +89,13 @@
       "when": ["request:apps-script", "file:Code.gs", "file:appsscript.json"],
       "skills": ["google-sheets-automation", "googlesheets-automation", "frontend-design"],
       "validation": ["frontend-backend-contract-check"]
+    },
+    {
+      "when": ["request:ui-design", "request:improve-ui", "request:design-system"],
+      "skills": ["frontend-design", "web-design-guidelines", "product-design"],
+      "optionalSkills": ["typeui-fundamentals"],
+      "externalSources": ["https://github.com/bergside/typeui"],
+      "validation": ["accessibility-check", "responsive-check-if-ui", "visual-review"]
     }
   ],
   "nonGenericResponseRules": [

@@ -17,6 +17,7 @@ Before doing any work, read and follow:
 
 Then run, if shell access is available:
 
+node .agent/scripts/bootstrap-agent.mjs
 node .agent/scripts/detect-project.mjs
 node .agent/scripts/agent-doctor.mjs
 
@@ -30,8 +31,9 @@ The canonical agent kit intentionally stays inside `.agent`. Some tools automati
 ## Best Available Activation Levels
 
 1. **Manual activation**: paste the instruction above.
-2. **Dry-run adapter check**: run `node .agent/scripts/export-agent-adapters.mjs --dry-run`.
-3. **Tool-specific adapter export**: run `node .agent/scripts/export-agent-adapters.mjs --write --tool <tool>` after you decide which AI tool should auto-load the kit.
+2. **Bootstrap**: run `node .agent/scripts/bootstrap-agent.mjs`.
+3. **Dry-run adapter check**: run `node .agent/scripts/export-agent-adapters.mjs --dry-run`.
+4. **Tool-specific adapter export**: run `node .agent/scripts/export-agent-adapters.mjs --write --tool <tool>` after you decide which AI tool should auto-load the kit.
 
 ## Safety
 

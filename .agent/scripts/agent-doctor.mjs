@@ -12,7 +12,9 @@ const routerPath = path.join(agentRoot, "skill-router.json");
 const requiredFiles = [
   ".agent/START_HERE.md",
   ".agent/AGENTS.md",
+  ".agent/active-skills.json",
   ".agent/adapters/adapter-map.json",
+  ".agent/adapters/profiles/antigravity.json",
   ".agent/rules/evidence-first.md",
   ".agent/rules/hybrid-router.md",
   ".agent/rules/professional-engineering.md",
@@ -22,8 +24,11 @@ const requiredFiles = [
   ".agent/core/hybrid-agent-policy.md",
   ".agent/core/professional-engineering-standards.md",
   ".agent/core/safe-commands.md",
+  ".agent/memory/decisions.md",
+  ".agent/projects/index.json",
   ".agent/skill-router.json",
   ".agent/skills/llms.txt",
+  ".agent/scripts/bootstrap-agent.mjs",
   ".agent/scripts/validate-agent-skills.mjs",
   ".agent/scripts/detect-project.mjs",
   ".agent/scripts/agent-doctor.mjs",
@@ -91,6 +96,8 @@ for (const file of requiredFiles) {
 
 const manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : null;
 const router = fs.existsSync(routerPath) ? readJson(routerPath) : null;
+const activeSkillsPath = path.join(agentRoot, "active-skills.json");
+const activeSkills = fs.existsSync(activeSkillsPath) ? readJson(activeSkillsPath) : null;
 
 const skillDirs = [];
 if (fs.existsSync(skillsRoot)) {
@@ -133,10 +140,27 @@ if (router) {
   }
 }
 
+if (activeSkills) {
+  const activeSkillNames = [
+    ...(activeSkills.defaultSet || []),
+    ...Object.values(activeSkills.taskSets || {}).flat(),
+  ];
+
+  for (const skill of new Set(activeSkillNames)) {
+    if (!fs.existsSync(path.join(skillsRoot, skill, "SKILL.md"))) {
+      addFailure(`Active skill missing on disk: ${skill}`);
+    }
+    if (!manifestEntries.has(skill)) {
+      addFailure(`Active skill missing from manifest: ${skill}`);
+    }
+  }
+}
+
 const agentControlFiles = [
   path.join(agentRoot, "START_HERE.md"),
   path.join(agentRoot, "AGENTS.md"),
   path.join(agentRoot, "README.md"),
+  path.join(agentRoot, "active-skills.json"),
   path.join(agentRoot, "skill-router.json"),
   path.join(agentRoot, "adapters", "adapter-map.json"),
 ];
@@ -146,6 +170,8 @@ for (const directory of [
   path.join(agentRoot, "adapters"),
   path.join(agentRoot, "rules"),
   path.join(agentRoot, "scripts"),
+  path.join(agentRoot, "memory"),
+  path.join(agentRoot, "projects"),
 ]) {
   if (fs.existsSync(directory)) {
     walk(directory, (file) => agentControlFiles.push(file));

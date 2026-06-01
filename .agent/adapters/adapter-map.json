@@ -12,7 +12,10 @@
     ],
     "router": ".agent/skill-router.json",
     "doctor": "node .agent/scripts/agent-doctor.mjs",
-    "detector": "node .agent/scripts/detect-project.mjs"
+    "detector": "node .agent/scripts/detect-project.mjs",
+    "bootstrap": "node .agent/scripts/bootstrap-agent.mjs",
+    "activeSkills": ".agent/active-skills.json",
+    "projectInventory": ".agent/projects/index.json"
   },
   "adapters": {
     "agents-md": {
@@ -41,5 +44,8 @@
     "writeRequires": "--write",
     "canonicalFilesRemainInDotAgent": true,
     "generatedAdaptersAreDisposable": true
+  },
+  "profiles": {
+    "antigravity": ".agent/adapters/profiles/antigravity.json"
   }
 }

@@ -1,0 +1,289 @@
+{
+  "repoRoot": "D:\\gsap",
+  "projectCount": 6,
+  "projects": [
+    {
+      "root": "bday-card",
+      "markers": [
+        "index.html"
+      ],
+      "packageManager": null,
+      "frameworks": [
+        "static-web"
+      ],
+      "dependencies": [],
+      "validationCommands": [],
+      "routeSignals": [
+        "file:index.html",
+        "framework:static-web"
+      ],
+      "matchedRoutes": [
+        {
+          "when": [
+            "framework:static-web",
+            "file:index.html"
+          ],
+          "skills": [
+            "frontend-design",
+            "gsap-core",
+            "web-performance-optimization"
+          ],
+          "validation": [
+            "html-css-js-syntax-check",
+            "responsive-check-if-ui"
+          ]
+        }
+      ]
+    },
+    {
+      "root": "bot-affiliate",
+      "markers": [
+        "package.json",
+        "npm-lock"
+      ],
+      "packageManager": "npm",
+      "frameworks": [],
+      "dependencies": [
+        "@google/generative-ai",
+        "axios",
+        "cheerio",
+        "dotenv",
+        "express",
+        "rss-parser",
+        "telegraf"
+      ],
+      "validationCommands": [],
+      "routeSignals": [
+        "dependency:@google/generative-ai",
+        "dependency:axios",
+        "dependency:cheerio",
+        "dependency:dotenv",
+        "dependency:express",
+        "dependency:rss-parser",
+        "dependency:telegraf"
+      ],
+      "matchedRoutes": []
+    },
+    {
+      "root": "keretaaaa",
+      "markers": [
+        "package.json",
+        "npm-lock"
+      ],
+      "packageManager": "npm",
+      "frameworks": [],
+      "dependencies": [
+        "pdf-parse",
+        "pdf2json",
+        "xlsx"
+      ],
+      "validationCommands": [],
+      "routeSignals": [
+        "dependency:pdf-parse",
+        "dependency:pdf2json",
+        "dependency:xlsx"
+      ],
+      "matchedRoutes": []
+    },
+    {
+      "root": "parallax",
+      "markers": [
+        "package.json",
+        "npm-lock",
+        "index.html"
+      ],
+      "packageManager": "npm",
+      "frameworks": [
+        "static-web"
+      ],
+      "dependencies": [
+        "split-type"
+      ],
+      "validationCommands": [],
+      "routeSignals": [
+        "dependency:split-type",
+        "file:index.html",
+        "framework:static-web"
+      ],
+      "matchedRoutes": [
+        {
+          "when": [
+            "framework:static-web",
+            "file:index.html"
+          ],
+          "skills": [
+            "frontend-design",
+            "gsap-core",
+            "web-performance-optimization"
+          ],
+          "validation": [
+            "html-css-js-syntax-check",
+            "responsive-check-if-ui"
+          ]
+        }
+      ]
+    },
+    {
+      "root": "portfolio-rafih",
+      "markers": [
+        "index.html"
+      ],
+      "packageManager": null,
+      "frameworks": [
+        "static-web"
+      ],
+      "dependencies": [],
+      "validationCommands": [],
+      "routeSignals": [
+        "file:index.html",
+        "framework:static-web"
+      ],
+      "matchedRoutes": [
+        {
+          "when": [
+            "framework:static-web",
+            "file:index.html"
+          ],
+          "skills": [
+            "frontend-design",
+            "gsap-core",
+            "web-performance-optimization"
+          ],
+          "validation": [
+            "html-css-js-syntax-check",
+            "responsive-check-if-ui"
+          ]
+        }
+      ]
+    },
+    {
+      "root": "web-bot-affiliate",
+      "markers": [
+        "package.json",
+        "npm-lock"
+      ],
+      "packageManager": "npm",
+      "frameworks": [
+        "nextjs",
+        "react"
+      ],
+      "dependencies": [
+        "@tailwindcss/postcss",
+        "@types/node",
+        "@types/react",
+        "@types/react-dom",
+        "axios",
+        "eslint",
+        "eslint-config-next",
+        "gsap",
+        "lucide-react",
+        "next",
+        "react",
+        "react-dom",
+        "tailwindcss",
+        "telegraf",
+        "twitter-api-v2",
+        "typescript"
+      ],
+      "validationCommands": [
+        "npm run lint",
+        "npm run build"
+      ],
+      "routeSignals": [
+        "dependency:@tailwindcss/postcss",
+        "dependency:@types/node",
+        "dependency:@types/react",
+        "dependency:@types/react-dom",
+        "dependency:axios",
+        "dependency:eslint",
+        "dependency:eslint-config-next",
+        "dependency:gsap",
+        "dependency:lucide-react",
+        "dependency:next",
+        "dependency:react",
+        "dependency:react-dom",
+        "dependency:tailwindcss",
+        "dependency:telegraf",
+        "dependency:twitter-api-v2",
+        "dependency:typescript",
+        "framework:nextjs"
+      ],
+      "matchedRoutes": [
+        {
+          "when": [
+            "dependency:gsap"
+          ],
+          "skills": [
+            "gsap-core",
+            "gsap-timeline",
+            "gsap-performance"
+          ],
+          "validation": [
+            "project-build-if-available",
+            "browser-or-visual-check-if-ui"
+          ]
+        },
+        {
+          "when": [
+            "dependency:react",
+            "framework:nextjs"
+          ],
+          "skills": [
+            "gsap-react",
+            "elite-gsap-react-architecture",
+            "react-best-practices",
+            "nextjs-best-practices"
+          ],
+          "validation": [
+            "npm-run-build-if-present",
+            "npm-run-lint-if-present"
+          ]
+        },
+        {
+          "when": [
+            "dependency:gsap"
+          ],
+          "skills": [
+            "gsap-scrolltrigger",
+            "gsap-performance",
+            "gsap-plugins"
+          ],
+          "validation": [
+            "reduced-motion-check",
+            "refresh-cleanup-check",
+            "browser-or-visual-check-if-ui"
+          ]
+        },
+        {
+          "when": [
+            "framework:nextjs"
+          ],
+          "skills": [
+            "nextjs-app-router-patterns",
+            "nextjs-best-practices",
+            "react-best-practices"
+          ],
+          "validation": [
+            "npm-run-build-if-present",
+            "npm-run-lint-if-present"
+          ]
+        },
+        {
+          "when": [
+            "dependency:react"
+          ],
+          "skills": [
+            "react-best-practices",
+            "frontend-design",
+            "react-component-performance"
+          ],
+          "validation": [
+            "npm-run-build-if-present"
+          ]
+        }
+      ]
+    }
+  ],
+  "generatedAt": "2026-06-01T12:22:05.471Z",
+  "generator": ".agent/scripts/bootstrap-agent.mjs"
+}

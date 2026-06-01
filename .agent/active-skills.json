@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-01",
+  "purpose": "Keep the daily agent context focused so the full skill library does not overwhelm tasks.",
+  "defaultSet": [
+    "gsap-core",
+    "gsap-timeline",
+    "gsap-scrolltrigger",
+    "gsap-plugins",
+    "gsap-utils",
+    "gsap-react",
+    "gsap-frameworks",
+    "gsap-performance",
+    "elite-gsap-react-architecture",
+    "frontend-design",
+    "frontend-developer",
+    "web-performance-optimization",
+    "react-best-practices",
+    "nextjs-best-practices",
+    "nextjs-app-router-patterns",
+    "code-reviewer",
+    "codebase-audit-pre-push",
+    "security-audit",
+    "verification-before-completion",
+    "vercel-deployment"
+  ],
+  "taskSets": {
+    "gsap-ui": [
+      "gsap-core",
+      "gsap-timeline",
+      "gsap-scrolltrigger",
+      "gsap-react",
+      "gsap-performance",
+      "elite-gsap-react-architecture",
+      "frontend-design"
+    ],
+    "nextjs": [
+      "nextjs-best-practices",
+      "nextjs-app-router-patterns",
+      "react-best-practices",
+      "react-component-performance"
+    ],
+    "quality": [
+      "code-reviewer",
+      "codebase-audit-pre-push",
+      "verification-before-completion",
+      "security-audit"
+    ],
+    "deploy": [
+      "vercel-deployment",
+      "deployment-validation-config-validate",
+      "environment-setup-guide"
+    ]
+  },
+  "optionalExternal": [
+    {
+      "name": "typeui-fundamentals",
+      "source": "https://github.com/bergside/typeui",
+      "reason": "Optional UI/UX fundamentals skill for stronger design guidance.",
+      "installCommand": "npx skills add https://github.com/bergside/typeui --skill typeui-fundamentals",
+      "status": "not-installed"
+    }
+  ]
+}
