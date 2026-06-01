@@ -20,6 +20,7 @@ Guardrail utama ada di:
 - `core/anti-hallucination.md`: aturan bukti, asumsi, validasi, dan red flags.
 - `core/hybrid-agent-policy.md`: policy hybrid lokal + riset resmi + skill routing.
 - `core/safe-commands.md`: registry command aman, butuh izin, dan berisiko tinggi.
+- `core/professional-engineering-standards.md`: standar engineering profesional untuk security, accessibility, supply-chain, testing, dan delivery.
 
 Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
 

@@ -23,6 +23,17 @@
       "node .agent/scripts/detect-project.mjs"
     ]
   },
+  "professionalStandards": {
+    "security": "OWASP ASVS-style verification for web application security controls.",
+    "accessibility": "WCAG 2.2 for user-facing web UI.",
+    "supplyChain": "SLSA-style supply-chain integrity: lockfiles, reproducible commands, no secrets.",
+    "definitionOfDone": [
+      "files changed are named",
+      "evidence inspected is named",
+      "validation command and result are named",
+      "remaining risk is stated"
+    ]
+  },
   "routes": [
     {
       "when": ["dependency:gsap", "file:gsap", "request:animation"],

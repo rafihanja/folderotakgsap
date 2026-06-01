@@ -45,6 +45,15 @@ node .agent/scripts/detect-project.mjs
 - Gunakan dokumentasi resmi saat perilaku tools bisa berubah, terutama Antigravity, framework, deploy, package manager, dan security.
 - Jangan memberi jawaban generik: sebutkan file yang dicek, skill yang relevan, command validasi, dan risiko yang tersisa.
 
+## Professional Standard
+
+- Ikuti `.agents/rules/professional-engineering.md`.
+- Gunakan `.agent/core/professional-engineering-standards.md` sebagai quality bar utama.
+- Untuk security, gunakan cara pikir OWASP ASVS.
+- Untuk UI web, gunakan WCAG 2.2 sebagai baseline aksesibilitas.
+- Untuk dependency/build/release, gunakan prinsip supply-chain safety seperti SLSA.
+- Jangan menyelesaikan task tanpa menyebut evidence, validasi, dan risiko tersisa.
+
 ## Safety Boundaries
 
 - Jangan menjalankan script dari `.agent/skills` secara otomatis. Baca `SKILL.md` dan script terkait dulu.
