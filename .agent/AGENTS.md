@@ -1,6 +1,6 @@
-# Agent Instructions
+# Universal Agent Instructions
 
-Gunakan instruksi ini untuk semua pekerjaan di repository ini, terutama saat bekerja dengan Antigravity dan folder `.agent`.
+Gunakan instruksi ini untuk semua AI coding agent yang bekerja dengan repository ini. File ini sengaja disimpan di dalam `.agent` supaya seluruh agent kit tetap portable dan tidak menyebar ke root project.
 
 ## Anti-Hallucination Rules
 
@@ -22,7 +22,7 @@ Gunakan instruksi ini untuk semua pekerjaan di repository ini, terutama saat bek
 ## `.agent` Workflow
 
 - `.agent/skills` adalah knowledge base skill yang sengaja disimpan di Git.
-- `.agents/rules` adalah aturan workspace Antigravity-native yang memuat guardrail utama.
+- `.agent/rules` adalah aturan portable untuk semua AI agent.
 - Jangan hapus, untrack, atau memindahkan `.agent` tanpa perintah eksplisit user.
 - Setelah mengubah `.agent`, jalankan:
 
@@ -42,12 +42,12 @@ node .agent/scripts/detect-project.mjs
 
 - Gunakan bukti lokal dulu: file, manifest, package config, dan output command.
 - Gunakan `.agent/skill-router.json` untuk memilih skill, bukan menebak dari ingatan.
-- Gunakan dokumentasi resmi saat perilaku tools bisa berubah, terutama Antigravity, framework, deploy, package manager, dan security.
+- Gunakan dokumentasi resmi saat perilaku tools bisa berubah, terutama framework, deploy, package manager, AI agent runtime, dan security.
 - Jangan memberi jawaban generik: sebutkan file yang dicek, skill yang relevan, command validasi, dan risiko yang tersisa.
 
 ## Professional Standard
 
-- Ikuti `.agents/rules/professional-engineering.md`.
+- Ikuti `.agent/rules/professional-engineering.md`.
 - Gunakan `.agent/core/professional-engineering-standards.md` sebagai quality bar utama.
 - Untuk security, gunakan cara pikir OWASP ASVS.
 - Untuk UI web, gunakan WCAG 2.2 sebagai baseline aksesibilitas.
@@ -59,4 +59,4 @@ node .agent/scripts/detect-project.mjs
 - Jangan menjalankan script dari `.agent/skills` secara otomatis. Baca `SKILL.md` dan script terkait dulu.
 - Jangan commit credential, `.env` asli, token, private key, atau output build/cache yang tidak perlu.
 - Jangan menyentuh folder untracked atau perubahan user yang tidak terkait dengan task.
-- Untuk Antigravity, gunakan mode/setting aman untuk project yang belum dipercaya: terminal command review, workspace isolation, dan Strict Mode jika tersedia.
+- Untuk project yang belum dipercaya, gunakan command review, workspace isolation, dan mode ketat jika agent mendukungnya.

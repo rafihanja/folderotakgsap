@@ -4,9 +4,9 @@ Apply this rule when implementing, reviewing, refactoring, securing, testing, or
 
 Source files:
 
-- @../../.agent/core/professional-engineering-standards.md
-- @../../.agent/core/safe-commands.md
-- @../../.agent/skill-router.json
+- `../core/professional-engineering-standards.md`
+- `../core/safe-commands.md`
+- `../skill-router.json`
 
 ## Required Behavior
 

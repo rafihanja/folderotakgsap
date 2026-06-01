@@ -9,10 +9,11 @@
     "model-reasoning-labelled-as-assumption"
   ],
   "antigravity": {
-    "workspaceRulesPath": ".agents/rules",
-    "workspaceSkillsPathPreferredByDocs": ".agents/skills",
-    "workspaceSkillsPathUsedByThisRepo": ".agent/skills",
-    "compatibilityNote": "Antigravity docs state .agents/skills is the default and .agent/skills remains supported for backward compatibility."
+    "note": "Antigravity is one supported runtime. This repo keeps canonical agent files inside .agent for portability across tools.",
+    "exportRulesPathIfNeeded": ".agents/rules",
+    "exportSkillsPathIfNeeded": ".agents/skills",
+    "canonicalRulesPathUsedByThisRepo": ".agent/rules",
+    "canonicalSkillsPathUsedByThisRepo": ".agent/skills"
   },
   "requiredValidation": {
     "agentConfigChanged": [

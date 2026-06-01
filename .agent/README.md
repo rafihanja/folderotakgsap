@@ -14,15 +14,18 @@ Folder ini disimpan di Git supaya setup skill AI agent bisa dipulihkan saat pind
 
 Guardrail utama ada di:
 
-- `../AGENTS.md`: aturan kerja root untuk agent di repository ini.
-- `../.agents/rules/evidence-first.md`: rule native Antigravity untuk kerja berbasis bukti.
-- `../.agents/rules/hybrid-router.md`: rule native Antigravity untuk routing skill dan validasi.
+- `AGENTS.md`: aturan utama portable untuk semua AI agent.
+- `rules/evidence-first.md`: rule untuk kerja berbasis bukti.
+- `rules/hybrid-router.md`: rule untuk routing skill dan validasi.
+- `rules/professional-engineering.md`: rule standar engineering profesional.
 - `core/anti-hallucination.md`: aturan bukti, asumsi, validasi, dan red flags.
 - `core/hybrid-agent-policy.md`: policy hybrid lokal + riset resmi + skill routing.
 - `core/safe-commands.md`: registry command aman, butuh izin, dan berisiko tinggi.
 - `core/professional-engineering-standards.md`: standar engineering profesional untuk security, accessibility, supply-chain, testing, dan delivery.
 
 Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
+
+Catatan: canonical agent kit sengaja berada di dalam `.agent`. Jika suatu AI tool membutuhkan file root seperti `AGENTS.md` atau folder khusus seperti `.agents/rules`, export/copy dari `.agent` hanya jika user meminta.
 
 ## Profil Skill Utama
 

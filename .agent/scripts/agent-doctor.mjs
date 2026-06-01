@@ -5,16 +5,15 @@ import { fileURLToPath } from "node:url";
 const currentFile = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(currentFile), "..", "..");
 const agentRoot = path.join(repoRoot, ".agent");
-const agentsRoot = path.join(repoRoot, ".agents");
 const skillsRoot = path.join(agentRoot, "skills");
 const manifestPath = path.join(skillsRoot, ".antigravity-install-manifest.json");
 const routerPath = path.join(agentRoot, "skill-router.json");
 
 const requiredFiles = [
-  "AGENTS.md",
-  ".agents/rules/evidence-first.md",
-  ".agents/rules/hybrid-router.md",
-  ".agents/rules/professional-engineering.md",
+  ".agent/AGENTS.md",
+  ".agent/rules/evidence-first.md",
+  ".agent/rules/hybrid-router.md",
+  ".agent/rules/professional-engineering.md",
   ".agent/README.md",
   ".agent/core/anti-hallucination.md",
   ".agent/core/hybrid-agent-policy.md",
@@ -131,15 +130,15 @@ if (router) {
 }
 
 const agentControlFiles = [
-  path.join(repoRoot, "AGENTS.md"),
+  path.join(agentRoot, "AGENTS.md"),
   path.join(agentRoot, "README.md"),
   path.join(agentRoot, "skill-router.json"),
 ];
 
 for (const directory of [
   path.join(agentRoot, "core"),
+  path.join(agentRoot, "rules"),
   path.join(agentRoot, "scripts"),
-  path.join(agentsRoot, "rules"),
 ]) {
   if (fs.existsSync(directory)) {
     walk(directory, (file) => agentControlFiles.push(file));
@@ -156,11 +155,11 @@ for (const file of agentControlFiles) {
   }
 }
 
-const agentsRuleCount = fs.existsSync(path.join(agentsRoot, "rules"))
-  ? fs.readdirSync(path.join(agentsRoot, "rules")).filter((name) => name.endsWith(".md")).length
+const agentRuleCount = fs.existsSync(path.join(agentRoot, "rules"))
+  ? fs.readdirSync(path.join(agentRoot, "rules")).filter((name) => name.endsWith(".md")).length
   : 0;
 
-if (agentsRuleCount === 0) warnings.push("No .agents/rules/*.md files found.");
+if (agentRuleCount === 0) warnings.push("No .agent/rules/*.md files found.");
 if (!fs.existsSync(path.join(agentRoot, "skills"))) warnings.push("No .agent/skills directory found.");
 
 if (failures.length > 0) {
@@ -175,7 +174,7 @@ if (failures.length > 0) {
 
 console.log("OK: agent doctor passed.");
 console.log(`- Required files: ${requiredFiles.length}`);
-console.log(`- Antigravity rule files: ${agentsRuleCount}`);
+console.log(`- Portable rule files: ${agentRuleCount}`);
 console.log(`- Skills with SKILL.md: ${skillDirs.length}`);
 console.log(`- Manifest entries: ${manifestEntries.size}`);
 console.log(`- Required GSAP skills: ${requiredSkills.length}`);

@@ -1,6 +1,6 @@
 # Hybrid Agent Policy
 
-This repository uses a hybrid operating model:
+This repository uses a hybrid operating model for any AI coding agent:
 
 1. **Local evidence first**: inspect project files, manifests, package scripts, and command output.
 2. **Skill routing second**: choose relevant `.agent/skills/*/SKILL.md` entries through `.agent/skill-router.json`.
@@ -9,11 +9,11 @@ This repository uses a hybrid operating model:
 
 ## Why This Exists
 
-The repository intentionally stores `.agent/skills` in Git so moving to a new device does not require rebuilding the agent brain manually. Antigravity can use project-specific rules and skills, but rules need to point the agent toward the right local context. Without a router and validation commands, a large skill library can become noisy and increase hallucination risk.
+The repository intentionally stores `.agent` in Git so moving to a new device does not require rebuilding the agent brain manually. Rules, policies, skills, routers, and validation scripts stay inside `.agent` as the canonical source. If a specific AI tool needs root-level files, export from `.agent` only when the user explicitly asks.
 
-## Verified Antigravity Facts
+## Verified AI Agent Runtime Facts
 
-Checked on 2026-06-01 from Google Antigravity documentation:
+Checked on 2026-06-01 from Google Antigravity documentation as one supported runtime example:
 
 - Agents operate inside **Projects**, and projects define folder/repository boundaries.
 - Antigravity supports **Local Mode** and **New Worktree Mode**.
@@ -23,7 +23,7 @@ Checked on 2026-06-01 from Google Antigravity documentation:
 - Workflows are reusable Markdown step sequences invoked by slash commands.
 - Security settings include terminal command review, non-workspace file access, Strict Mode, and sandboxing.
 
-Primary references:
+Primary Antigravity references:
 
 - https://antigravity.google/docs/projects
 - https://antigravity.google/docs/rules
@@ -63,3 +63,16 @@ Use when both project context and current external behavior matter:
 ## Anti-Hallucination Contract
 
 An agent must not present a guess as fact. If a claim came from local files, cite the path. If it came from command output, name the command. If it came from external research, cite the link. If it came from reasoning, label it as a recommendation or assumption.
+
+## Tool Portability
+
+Canonical paths:
+
+- `.agent/AGENTS.md`
+- `.agent/rules/*.md`
+- `.agent/core/*.md`
+- `.agent/skills/*/SKILL.md`
+- `.agent/skill-router.json`
+- `.agent/scripts/*.mjs`
+
+Do not create or require root-level agent files unless the user asks for an export for a specific tool.

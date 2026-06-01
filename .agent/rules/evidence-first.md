@@ -1,12 +1,12 @@
 # Evidence-First Rule
 
-Apply this rule for every coding, review, debugging, deployment, and repository-management task.
+Apply this rule for every coding, review, debugging, deployment, and repository-management task across any AI agent.
 
 Source files:
 
-- @../../AGENTS.md
-- @../../.agent/core/anti-hallucination.md
-- @../../.agent/core/safe-commands.md
+- `../AGENTS.md`
+- `../core/anti-hallucination.md`
+- `../core/safe-commands.md`
 
 ## Required Behavior
 
