@@ -8,6 +8,16 @@ Folder ini disimpan di Git supaya setup skill AI agent bisa dipulihkan saat pind
 - Membuat skill GSAP/frontend langsung tersedia setelah clone.
 - Menghindari pengulangan instalasi manual saat pindah device.
 - Memberi cara validasi cepat untuk memastikan manifest dan isi disk sinkron.
+- Mengurangi halusinasi agent dengan aturan evidence-first.
+
+## Anti-Hallucination
+
+Guardrail utama ada di:
+
+- `../AGENTS.md`: aturan kerja root untuk agent di repository ini.
+- `core/anti-hallucination.md`: aturan bukti, asumsi, validasi, dan red flags.
+
+Prinsipnya sederhana: agent harus membaca file atau menjalankan command yang relevan sebelum mengklaim sesuatu. Kalau belum dicek, agent wajib menyebutnya sebagai asumsi atau meminta klarifikasi.
 
 ## Profil Skill Utama
 

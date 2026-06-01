@@ -4,8 +4,16 @@ import { fileURLToPath } from "node:url";
 
 const currentFile = fileURLToPath(import.meta.url);
 const agentRoot = path.resolve(path.dirname(currentFile), "..");
+const repoRoot = path.resolve(agentRoot, "..");
 const skillsRoot = path.join(agentRoot, "skills");
 const manifestPath = path.join(skillsRoot, ".antigravity-install-manifest.json");
+
+const requiredSupportFiles = [
+  path.join(repoRoot, "AGENTS.md"),
+  path.join(agentRoot, "README.md"),
+  path.join(agentRoot, "core", "anti-hallucination.md"),
+  path.join(skillsRoot, "llms.txt"),
+];
 
 const requiredSkills = [
   "gsap-core",
@@ -86,6 +94,7 @@ const manifestSet = new Set(manifestEntries);
 
 const missingFromManifest = skillDirs.filter((skill) => !manifestSet.has(skill));
 const missingOnDisk = manifestEntries.filter((skill) => !fs.existsSync(path.join(skillsRoot, skill)));
+const missingSupportFiles = requiredSupportFiles.filter((file) => !fs.existsSync(file));
 const missingRequiredSkills = requiredSkills.filter(
   (skill) =>
     !fs.existsSync(path.join(skillsRoot, skill, "SKILL.md")) ||
@@ -98,6 +107,13 @@ if (missingFromManifest.length > 0) {
 
 if (missingOnDisk.length > 0) {
   fail("Some manifest entries are missing on disk.", missingOnDisk);
+}
+
+if (missingSupportFiles.length > 0) {
+  fail(
+    "Required agent guardrail files are missing.",
+    missingSupportFiles.map((file) => path.relative(repoRoot, file).replaceAll(path.sep, "/")),
+  );
 }
 
 if (missingRequiredSkills.length > 0) {
@@ -113,3 +129,4 @@ console.log(`- Top-level directories: ${topLevelDirs.length}`);
 console.log(`- Skills with SKILL.md: ${skillDirs.length}`);
 console.log(`- Manifest entries: ${manifestEntries.length}`);
 console.log(`- Required GSAP/frontend skills: ${requiredSkills.length}`);
+console.log(`- Required guardrail files: ${requiredSupportFiles.length}`);
