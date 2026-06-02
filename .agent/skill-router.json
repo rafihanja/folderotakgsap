@@ -96,6 +96,21 @@
       "optionalSkills": ["typeui-fundamentals"],
       "externalSources": ["https://github.com/bergside/typeui"],
       "validation": ["accessibility-check", "responsive-check-if-ui", "visual-review"]
+    },
+    {
+      "when": ["request:backend", "request:api", "request:rest-api", "request:server"],
+      "skills": ["backend-architect", "api-patterns", "nodejs-backend-patterns"],
+      "validation": ["project-build-if-available"]
+    },
+    {
+      "when": ["request:database", "request:sql", "request:postgres", "request:supabase", "file:schema"],
+      "skills": ["database", "database-design", "supabase", "neon-postgres", "drizzle-orm-expert", "postgres-best-practices"],
+      "validation": ["project-build-if-available"]
+    },
+    {
+      "when": ["request:laravel", "request:php", "file:artisan", "file:composer.json"],
+      "skills": ["laravel-expert", "database", "database-design", "api-patterns"],
+      "validation": ["project-build-if-available"]
     }
   ],
   "nonGenericResponseRules": [

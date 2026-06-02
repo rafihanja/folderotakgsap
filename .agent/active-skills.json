@@ -22,7 +22,14 @@
     "codebase-audit-pre-push",
     "security-audit",
     "verification-before-completion",
-    "vercel-deployment"
+    "vercel-deployment",
+    "backend-architect",
+    "database",
+    "database-design",
+    "supabase",
+    "api-patterns",
+    "laravel-expert",
+    "nodejs-backend-patterns"
   ],
   "taskSets": {
     "gsap-ui": [
@@ -50,6 +57,19 @@
       "vercel-deployment",
       "deployment-validation-config-validate",
       "environment-setup-guide"
+    ],
+    "backend-db": [
+      "backend-architect",
+      "database",
+      "database-design",
+      "database-admin",
+      "supabase",
+      "neon-postgres",
+      "postgres-best-practices",
+      "drizzle-orm-expert",
+      "api-patterns",
+      "nodejs-backend-patterns",
+      "laravel-expert"
     ]
   },
   "optionalExternal": [
